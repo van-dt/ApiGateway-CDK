@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+    branch:
+      - main
+
+jobs:
+  build:
+    name: Build and Test AWS CDK TypeScript Stack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initiated By User
+        run: echo $GITHUB_ACTOR
+
+      - name: Check Out Code
+        uses: actions/checkout@v3.1.0
+
+      - name: Install Node
+        uses: actions/setup-node@v3.5.0
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build CDK Stack
+        run: yarn build
+
+      - name: Run Unit Tests
+        run: yarn test
+
+      - name: Diff AWS CDK Stack
+        run: "npx cdk diff CdkTsStack --ci --require-approval never --no-asset-metadata"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "ap-southeast-1"
