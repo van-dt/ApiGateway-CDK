@@ -29,7 +29,7 @@ jobs:
         run: yarn test
 
       - name: Diff AWS CDK Stack
-        run: "npx cdk diff CdkTsStack --ci --require-approval never --no-asset-metadata"
+        run: "npx cdk diff CdkTsApiGatewayStack --ci --require-approval never --no-asset-metadata"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
